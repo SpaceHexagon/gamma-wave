@@ -14,7 +14,7 @@ var _ = require('lodash'),
   logger = require(path.resolve('./config/lib/logger')),
   seed = require(path.resolve('./config/lib/mongo-seed')),
   express = require(path.resolve('./config/lib/express')),
-  Article = mongoose.model('Article');
+  Media = mongoose.model('Media');
 
 /**
  * Globals
@@ -31,11 +31,11 @@ describe('Configuration Tests:', function () {
 
   describe('Testing Mongo Seed', function () {
     var _seedConfig = _.clone(config.seedDB, true);
-    var articleSeedConfig;
+    var mediaSeedConfig;
     var userSeedConfig;
     var _admin;
     var _user;
-    var _article;
+    var _media;
 
     before(function (done) {
       _admin = {
@@ -54,17 +54,17 @@ describe('Configuration Tests:', function () {
         roles: ['user']
       };
 
-      _article = {
-        title: 'Testing Database Seed Article',
-        content: 'Testing Article Seed right now!'
+      _media = {
+        title: 'Testing Database Seed Media',
+        content: 'Testing Media Seed right now!'
       };
 
-      var articleCollections = _.filter(_seedConfig.collections, function (collection) {
-        return collection.model === 'Article';
+      var mediaCollections = _.filter(_seedConfig.collections, function (collection) {
+        return collection.model === 'Media';
       });
 
-      // articleCollections.should.be.instanceof(Array).and.have.lengthOf(1);
-      articleSeedConfig = articleCollections[0];
+      // mediaCollections.should.be.instanceof(Array).and.have.lengthOf(1);
+      mediaSeedConfig = mediaCollections[0];
 
       var userCollections = _.filter(_seedConfig.collections, function (collection) {
         return collection.model === 'User';
@@ -77,7 +77,7 @@ describe('Configuration Tests:', function () {
     });
 
     afterEach(function (done) {
-      Article.remove().exec()
+      Media.remove().exec()
         .then(function () {
           return User.remove().exec();
         })
@@ -89,11 +89,11 @@ describe('Configuration Tests:', function () {
         });
     });
 
-    it('should have default seed configuration set for articles', function (done) {
-      articleSeedConfig.should.be.instanceof(Object);
-      articleSeedConfig.docs.should.be.instanceof(Array).and.have.lengthOf(1);
-      should.exist(articleSeedConfig.docs[0].data.title);
-      should.exist(articleSeedConfig.docs[0].data.content);
+    it('should have default seed configuration set for media', function (done) {
+      mediaSeedConfig.should.be.instanceof(Object);
+      mediaSeedConfig.docs.should.be.instanceof(Array).and.have.lengthOf(1);
+      should.exist(mediaSeedConfig.docs[0].data.title);
+      should.exist(mediaSeedConfig.docs[0].data.content);
 
       return done();
     });
@@ -121,11 +121,11 @@ describe('Configuration Tests:', function () {
 
       seed.start()
         .then(function () {
-          // Check Articles Seed
-          return Article.find().exec();
+          // Check Media Seed
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(articleSeedConfig.docs.length);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(mediaSeedConfig.docs.length);
           // Check Users Seed
           return User.find().exec();
         })
@@ -136,26 +136,26 @@ describe('Configuration Tests:', function () {
         .catch(done);
     });
 
-    it('should overwrite existing article by default', function (done) {
-      articleSeedConfig.docs.should.be.instanceof(Array).and.have.lengthOf(1);
+    it('should overwrite existing media by default', function (done) {
+      mediaSeedConfig.docs.should.be.instanceof(Array).and.have.lengthOf(1);
 
-      var article = new Article(articleSeedConfig.docs[0].data);
-      article.content = '_temp_test_article_';
+      var media = new Media(mediaSeedConfig.docs[0].data);
+      media.content = '_temp_test_media_';
 
-      // save temp article
-      article.save()
+      // save temp media
+      media.save()
         .then(function () {
           return seed.start();
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var newArticle = articles.pop();
-          articleSeedConfig.docs[0].data.title.should.equal(newArticle.title);
-          articleSeedConfig.docs[0].data.content.should.equal(newArticle.content);
+          var newMedia = media.pop();
+          mediaSeedConfig.docs[0].data.title.should.equal(newMedia.title);
+          mediaSeedConfig.docs[0].data.content.should.equal(newMedia.content);
 
           return done();
         })
@@ -216,33 +216,33 @@ describe('Configuration Tests:', function () {
         .catch(done);
     });
 
-    it('should seed single article with custom options', function (done) {
+    it('should seed single media with custom options', function (done) {
       seed
         .start({
           collections: [{
-            model: 'Article',
+            model: 'Media',
             docs: [{
               overwrite: true,
-              data: _article
+              data: _media
             }]
           }]
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var newArticle = articles.pop();
-          _article.title.should.equal(newArticle.title);
-          _article.content.should.equal(newArticle.content);
+          var newMedia = media.pop();
+          _media.title.should.equal(newMedia.title);
+          _media.content.should.equal(newMedia.content);
 
           return done();
         })
         .catch(done);
     });
 
-    it('should seed single article with user set to custom seeded admin user', function (done) {
+    it('should seed single media with user set to custom seeded admin user', function (done) {
       seed
         .start({
           collections: [{
@@ -251,10 +251,10 @@ describe('Configuration Tests:', function () {
               data: _admin
             }]
           }, {
-            model: 'Article',
+            model: 'Media',
             docs: [{
               overwrite: true,
-              data: _article
+              data: _media
             }]
           }]
         })
@@ -264,42 +264,42 @@ describe('Configuration Tests:', function () {
         .then(function (users) {
           users.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          return Article
+          return Media
             .find()
             .populate('user', 'firstName lastName username email roles')
             .exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var newArticle = articles.pop();
-          _article.title.should.equal(newArticle.title);
-          _article.content.should.equal(newArticle.content);
+          var newMedia = media.pop();
+          _media.title.should.equal(newMedia.title);
+          _media.content.should.equal(newMedia.content);
 
-          should.exist(newArticle.user);
-          should.exist(newArticle.user._id);
+          should.exist(newMedia.user);
+          should.exist(newMedia.user._id);
 
-          _admin.username.should.equal(newArticle.user.username);
-          _admin.email.should.equal(newArticle.user.email);
-          _admin.firstName.should.equal(newArticle.user.firstName);
-          _admin.lastName.should.equal(newArticle.user.lastName);
+          _admin.username.should.equal(newMedia.user.username);
+          _admin.email.should.equal(newMedia.user.email);
+          _admin.firstName.should.equal(newMedia.user.firstName);
+          _admin.lastName.should.equal(newMedia.user.lastName);
 
-          should.exist(newArticle.user.roles);
-          newArticle.user.roles.indexOf('admin').should.equal(_admin.roles.indexOf('admin'));
+          should.exist(newMedia.user.roles);
+          newMedia.user.roles.indexOf('admin').should.equal(_admin.roles.indexOf('admin'));
 
           return done();
         })
         .catch(done);
     });
 
-    it('should seed single article with NO user set due to seed order', function (done) {
+    it('should seed single media with NO user set due to seed order', function (done) {
       seed
         .start({
           collections: [{
-            model: 'Article',
+            model: 'Media',
             docs: [{
               overwrite: true,
-              data: _article
+              data: _media
             }]
           }, {
             model: 'User',
@@ -314,19 +314,19 @@ describe('Configuration Tests:', function () {
         .then(function (users) {
           users.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          return Article
+          return Media
             .find()
             .populate('user', 'firstName lastName username email roles')
             .exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var newArticle = articles.pop();
-          _article.title.should.equal(newArticle.title);
-          _article.content.should.equal(newArticle.content);
+          var newMedia = media.pop();
+          _media.title.should.equal(newMedia.title);
+          _media.content.should.equal(newMedia.content);
 
-          should.not.exist(newArticle.user);
+          should.not.exist(newMedia.user);
 
           return done();
         })
@@ -373,32 +373,32 @@ describe('Configuration Tests:', function () {
         .catch(done);
     });
 
-    it('should NOT overwrite existing article with custom options', function (done) {
+    it('should NOT overwrite existing media with custom options', function (done) {
 
-      var article = new Article(_article);
-      article.content = '_temp_article_content_';
+      var media = new Media(_media);
+      media.content = '_temp_media_content_';
 
-      article.save()
+      media.save()
         .then(function () {
           return seed.start({
             collections: [{
-              model: 'Article',
+              model: 'Media',
               docs: [{
                 overwrite: false,
-                data: _article
+                data: _media
               }]
             }]
           });
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var existingArticle = articles.pop();
-          article.title.should.equal(existingArticle.title);
-          article.content.should.equal(existingArticle.content);
+          var existingMedia = media.pop();
+          media.title.should.equal(existingMedia.title);
+          media.content.should.equal(existingMedia.content);
 
           return done();
         })
@@ -437,15 +437,15 @@ describe('Configuration Tests:', function () {
         .catch(done);
     });
 
-    it('should NOT seed article when missing title with custom options', function (done) {
+    it('should NOT seed media when missing title with custom options', function (done) {
       var invalid = {
-        content: '_temp_article_content_'
+        content: '_temp_media_content_'
       };
 
       seed
         .start({
           collections: [{
-            model: 'Article',
+            model: 'Media',
             docs: [{
               data: invalid
             }]
@@ -459,7 +459,7 @@ describe('Configuration Tests:', function () {
         })
         .catch(function (err) {
           should.exist(err);
-          err.message.should.equal('Article validation failed: title: Title cannot be blank');
+          err.message.should.equal('Media validation failed: title: Title cannot be blank');
 
           return done();
         });
@@ -552,10 +552,10 @@ describe('Configuration Tests:', function () {
           collections: []
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(0);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(0);
 
           return User.find().exec();
         })
@@ -571,15 +571,15 @@ describe('Configuration Tests:', function () {
       seed
         .start({
           collections: [{
-            model: 'Article',
+            model: 'Media',
             docs: []
           }]
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(0);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(0);
 
           return User.find().exec();
         })
@@ -591,28 +591,28 @@ describe('Configuration Tests:', function () {
         .catch(done);
     });
 
-    it('should seed article with custom options & skip.when results are empty', function (done) {
+    it('should seed media with custom options & skip.when results are empty', function (done) {
       seed
         .start({
           collections: [{
-            model: 'Article',
+            model: 'Media',
             skip: {
               when: { title: 'should-not-find-this-title' }
             },
             docs: [{
-              data: _article
+              data: _media
             }]
           }]
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var newArticle = articles.pop();
-          _article.title.should.be.equal(newArticle.title);
-          _article.content.should.be.equal(newArticle.content);
+          var newMedia = media.pop();
+          _media.title.should.be.equal(newMedia.title);
+          _media.content.should.be.equal(newMedia.content);
 
           return done();
         })
@@ -620,45 +620,45 @@ describe('Configuration Tests:', function () {
     });
 
     it('should skip seed on collection with custom options & skip.when has results', function (done) {
-      var article = new Article({
-        title: 'temp-article-title',
-        content: 'temp-article-content'
+      var media = new Media({
+        title: 'temp-media-title',
+        content: 'temp-media-content'
       });
 
-      article
+      media
         .save()
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var newArticle = articles.pop();
-          article.title.should.equal(newArticle.title);
-          article.content.should.equal(newArticle.content);
+          var newMedia = media.pop();
+          media.title.should.equal(newMedia.title);
+          media.content.should.equal(newMedia.content);
 
           return seed.start({
             collections: [{
-              model: 'Article',
+              model: 'Media',
               skip: {
-                when: { title: newArticle.title }
+                when: { title: newMedia.title }
               },
               docs: [{
-                data: _article
+                data: _media
               }]
             }]
           });
         })
         .then(function () {
-          return Article.find().exec();
+          return Media.find().exec();
         })
-        .then(function (articles) {
-          // We should have the same article added at start of this unit test.
-          articles.should.be.instanceof(Array).and.have.lengthOf(1);
+        .then(function (media) {
+          // We should have the same media added at start of this unit test.
+          media.should.be.instanceof(Array).and.have.lengthOf(1);
 
-          var existingArticle = articles.pop();
-          article.title.should.equal(existingArticle.title);
-          article.content.should.equal(existingArticle.content);
+          var existingMedia = media.pop();
+          media.title.should.equal(existingMedia.title);
+          media.content.should.equal(existingMedia.content);
 
           return done();
         })
@@ -669,12 +669,12 @@ describe('Configuration Tests:', function () {
       seed
         .start({
           collections: [{
-            model: 'Article',
+            model: 'Media',
             skip: {
               when: { created: 'not-a-valid-date' }
             },
             docs: [{
-              data: _article
+              data: _media
             }]
           }]
         })

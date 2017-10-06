@@ -105,12 +105,12 @@ module.exports = {
         }
       }]
     }, {
-      model: 'Article',
+      model: 'Media',
       docs: [{
         overwrite: true,
         data: {
-          title: 'Test Article',
-          content: 'Code coverage test article!'
+          title: 'Test Media',
+          content: 'Code coverage test media!'
         }
       }]
     }]

@@ -74,7 +74,7 @@ module.exports = {
     },
     // Order of collections in configuration will determine order of seeding.
     // i.e. given these settings, the User seeds will be complete before
-    // Article seed is performed.
+    // Media seed is performed.
     collections: [{
       model: 'User',
       docs: [{
@@ -100,7 +100,7 @@ module.exports = {
         }
       }]
     }, {
-      model: 'Article',
+      model: 'Media',
       options: {
         // Override log results setting at the
         // collection level.
@@ -113,8 +113,8 @@ module.exports = {
       },
       docs: [{
         data: {
-          title: 'First Article',
-          content: 'This is a seeded Article for the development environment'
+          title: 'First Media',
+          content: 'This is a seeded Media for the development environment'
         }
       }]
     }]

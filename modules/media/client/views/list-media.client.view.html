@@ -1,0 +1,18 @@
+<section>
+  <div class="page-header">
+    <h1>Media</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="media in vm.media" ui-sref="media.view({ mediaId: media._id })" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="media.created | date:'mediumDate'"></span>
+        by
+        <span ng-if="media.user" ng-bind="media.user.displayName"></span>
+        <span ng-if="!media.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="media.title"></h4>
+      <p class="list-group-item-text" ng-bind="media.content"></p>
+    </a>
+  </div>
+</section>

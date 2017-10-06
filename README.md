@@ -44,7 +44,7 @@ To run your application in a secure manner you'll need to use OpenSSL and genera
 $ npm run generate-ssl-certs
 ```
 
-Windows users can follow instructions found [here](http://www.websense.com/support/article/kbarticle/How-to-use-OpenSSL-and-Microsoft-Certification-Authority).
+Windows users can follow instructions found [here](http://www.websense.com/support/media/kbmedia/How-to-use-OpenSSL-and-Microsoft-Certification-Authority).
 After you've generated the key and certificate, place them in the *config/sslcerts* folder.
 
 Finally, execute prod task `npm run start:prod`
