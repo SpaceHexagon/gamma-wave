@@ -1,1 +1,0 @@
-angular.module('gammaWave', ['ngRoute', 'appRoutes', 'MainCtrl', 'MediaCtrl', 'MediaService' ]);
