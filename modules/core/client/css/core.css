@@ -51,3 +51,22 @@ body { padding-top:30px; background-color:#191a1f; color: rgb(232, 235, 255) }
 .jumbotron {
     background-color: rgba(255,255,255,0.1)
 }
+
+.subtle-shade {
+  color: rgba(21, 255, 0, 0.87)
+}
+
+a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading {
+  color: #27ff00;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: rgba(255, 255, 255, 0.09);
+  border: none;
+  border-top: solid 1px #666;
+  color: rgb(255, 255, 255) !important;
+}

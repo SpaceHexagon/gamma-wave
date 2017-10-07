@@ -52,7 +52,7 @@ Finally, execute prod task `npm run start:prod`
 
 
 ## Testing
-You can run the full test suite included with MEAN.JS with the test task:
+You can run the full test suite with the test task:
 
 ```bash
 $ npm test
@@ -116,9 +116,9 @@ $ docker run -p 3000:3000 --link db:db_1 mean
 
 ## Deploying to PAAS
 
-###  Deploying MEANJS To Heroku
+###  Deploying Gamma Wave To Heroku
 
-By clicking the button below you can signup for Heroku and deploy a working copy of MEANJS to the cloud without having to do the steps above.
+By clicking the button below you can signup for Heroku and deploy a working copy of Gamma Wave to the cloud without having to do the steps above.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
@@ -131,8 +131,11 @@ S3_ACCESS_KEY_ID: Your S3 access key
 S3_SECRET_ACCESS_KEY: Your S3 access key password
 
 ## Credits
+
 Based off of boilerplate at [https://github.com/meanjs/mean](https://github.com/meanjs/mean)
+
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/)
+
 The MEAN name was coined by [Valeri Karpov](http://blog.mongodb.org/post/49262866911/the-mean-stack-mongodb-expressjs-angularjs-and).
 
 ## License
