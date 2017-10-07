@@ -6,10 +6,86 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Media = mongoose.model('Media'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  shortId = require('shortid'),
+  Grid = require('gridfs-stream'),
+  Busboy = require('busboy'),
+  gfs = null,
+  mongo = require('mongodb'),
+  gridDB = new mongo.Db('gamma-wave', new mongo.Server('127.0.0.1', 27017)),
+  ObjectID = mongo.ObjectID;
+
+
+gridDB.open(function (err) { // make sure the db instance is open before passing into `Grid`
+  if (err) return console.error(err);
+  gfs = Grid(gridDB, mongo);
+});
 
 /**
  * Create an media
+ */
+exports.readStream = function (req, res) {
+  var username = req.params.username,
+    allFiles = gridDB.collection('files');
+
+  allFiles.find({ filename: req.params.file }).toArray(function (err, files) {
+    if (err) {
+      res.json(err);
+    }
+
+    if (files.length > 0) {
+      if (files[0].metadata.public === true) {
+        res.set('Content-Type', files[0].contentType);
+        var read_stream = gfs.createReadStream({
+          root: username,
+          filename: req.params.file
+        });
+        read_stream.pipe(res);
+      } else {
+        res.status(403).send('Forbidden');
+      }
+
+    } else {
+      return res.status(404).send(' ');
+    }
+  });
+};
+
+/**
+ * Upload media file
+ */
+exports.uploadStream = function (req, res) {
+  var online = req.app.get('online'),
+    busboy = new Busboy({
+      headers: req.headers
+    }),
+    username = 'public'; // online[req.headers['x-access-token']];
+
+  busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+    console.log('got file', filename, mimetype, encoding);
+    var fileId = new mongo.ObjectId(),
+      writeStream = gfs.createWriteStream({
+        _id: fileId,
+        filename: filename,
+        root: username,
+        mode: 'w',
+        content_type: mimetype,
+        metadata: {
+          public: false,
+          modified: Date.now(),
+          username: username
+        }
+      });
+
+    file.pipe(writeStream);
+  }).on('finish', function () {
+    res.status(200).send(' ');
+  });
+  req.pipe(busboy);
+};
+
+/**
+ * Create media manually
  */
 exports.create = function (req, res) {
   var media = new Media(req.body);

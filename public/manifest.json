@@ -1,11 +1,11 @@
 {
-  "name": "meanjs",
-  "short_name": "meanjs",
+  "name": "Gamma Wave",
+  "short_name": "gammawave",
   "start_url": ".",
   "display": "browser",
-  "background_color": "#fff",
-  "theme_color": "#000",
-  "description": "Fullstack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
+  "background_color": "#000",
+  "theme_color": "#fff",
+  "description": "Media player and server, creating oscillations pleasing to humans",
   "icons": [{
     "src": "/modules/core/client/img/brand/icon.png",
     "sizes": "128x128",
