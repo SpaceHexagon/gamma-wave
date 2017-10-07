@@ -15,6 +15,8 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.upload = upload;
+    vm.fileId = '';
 
     // Remove existing Media
     function remove() {
@@ -23,6 +25,19 @@
           $state.go('admin.media.list');
           Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Media deleted successfully!' });
         });
+      }
+    }
+
+    function upload() {
+      // get file input
+      vm.media.upload(successCallback, errorCallback);
+      function successCallback(res) {
+        $state.go('admin.media.list'); // should we send the User to the list or the updated Media's view?
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Media uploaded successfully!' });
+      }
+
+      function errorCallback(res) {
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Upload Failed' });
       }
     }
 
@@ -37,7 +52,8 @@
       // initiate streaming file upload
 
       console.info('Before saving: vm.media: ', vm.media);
-
+      // set fileId
+      var fileId = vm.fileId;
       // Then do all this stuff
       // Create a new media, or update the current instance
       vm.media.createOrUpdate()
