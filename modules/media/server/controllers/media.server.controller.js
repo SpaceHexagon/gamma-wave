@@ -29,7 +29,7 @@ exports.readStream = function (req, res) {
   var username = req.params.username,
     allFiles = gridDB.collection('files');
 
-  allFiles.find({ filename: req.params.file }).toArray(function (err, files) {
+  allFiles.find({ filename: req.params.fileId }).toArray(function (err, files) {
     if (err) {
       res.json(err);
     }
@@ -125,7 +125,7 @@ exports.update = function (req, res) {
   var media = req.media;
 
   media.title = req.body.title;
-  media.content = req.body.content;
+  media.description = req.body.description;
 
   media.save(function (err) {
     if (err) {

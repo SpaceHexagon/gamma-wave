@@ -18,6 +18,10 @@ module.exports = function (app) {
     .put(media.update)
     .delete(media.delete);
 
+  app.route('/api/files')
+    .post(media.uploadStream);
+  app.route('/api/files/:fileId')
+    .get(media.readStream);
   // Finish by binding the media middleware
   app.param('mediaId', media.mediaByID);
 };

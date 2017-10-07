@@ -23,10 +23,14 @@ var MediaSchema = new Schema({
     trim: true,
     required: 'Title cannot be blank'
   },
-  content: {
+  description: {
     type: String,
     default: '',
     trim: true
+  },
+  fileId: {
+    type: String,
+    default: ''
   },
   user: {
     type: Schema.ObjectId,

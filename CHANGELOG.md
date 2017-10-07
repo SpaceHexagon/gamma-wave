@@ -1134,7 +1134,7 @@
 * test(travis): Add Testing for Node 5 ([eafad77](https://github.com/meanjs/mean/commit/eafad77))
 * BUG: fix admin access (blocking user PUT) ([839f805](https://github.com/meanjs/mean/commit/839f805))
 * BUG: Path separator support for windows. ([3e378b4](https://github.com/meanjs/mean/commit/3e378b4))
-* BUG: Removed a ng-binding to media.content in user-list.client.view.html ([2747df6](https://github.com/meanjs/mean/commit/2747df6))
+* BUG: Removed a ng-binding to media.description in user-list.client.view.html ([2747df6](https://github.com/meanjs/mean/commit/2747df6))
 * formatting: indent ([b8d6fa7](https://github.com/meanjs/mean/commit/b8d6fa7))
 * Feature: Media CRUD ops. Added supertests. closes meanjs/mean#92 ([2ec6fa0](https://github.com/meanjs/mean/commit/2ec6fa0)), closes [meanjs/mean#92](https://github.com/meanjs/mean/issues/92)
 
@@ -1402,7 +1402,7 @@
 
 * BUG: fix admin access (blocking user PUT) ([839f805](https://github.com/meanjs/mean/commit/839f805))
 * BUG: Path separator support for windows. ([3e378b4](https://github.com/meanjs/mean/commit/3e378b4))
-* BUG: Removed a ng-binding to media.content in user-list.client.view.html ([2747df6](https://github.com/meanjs/mean/commit/2747df6))
+* BUG: Removed a ng-binding to media.description in user-list.client.view.html ([2747df6](https://github.com/meanjs/mean/commit/2747df6))
 
 ### formatting
 

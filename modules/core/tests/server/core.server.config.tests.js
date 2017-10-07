@@ -93,7 +93,7 @@ describe('Configuration Tests:', function () {
       mediaSeedConfig.should.be.instanceof(Object);
       mediaSeedConfig.docs.should.be.instanceof(Array).and.have.lengthOf(1);
       should.exist(mediaSeedConfig.docs[0].data.title);
-      should.exist(mediaSeedConfig.docs[0].data.content);
+      should.exist(mediaSeedConfig.docs[0].datadescription);
 
       return done();
     });
@@ -140,7 +140,7 @@ describe('Configuration Tests:', function () {
       mediaSeedConfig.docs.should.be.instanceof(Array).and.have.lengthOf(1);
 
       var media = new Media(mediaSeedConfig.docs[0].data);
-      media.content = '_temp_test_media_';
+      media.description = '_temp_test_media_';
 
       // save temp media
       media.save()
@@ -155,7 +155,7 @@ describe('Configuration Tests:', function () {
 
           var newMedia = media.pop();
           mediaSeedConfig.docs[0].data.title.should.equal(newMedia.title);
-          mediaSeedConfig.docs[0].data.content.should.equal(newMedia.content);
+          mediaSeedConfig.docs[0].datadescription.should.equal(newMedia.description);
 
           return done();
         })
@@ -235,7 +235,7 @@ describe('Configuration Tests:', function () {
 
           var newMedia = media.pop();
           _media.title.should.equal(newMedia.title);
-          _media.content.should.equal(newMedia.content);
+          _media.description.should.equal(newMedia.description);
 
           return done();
         })
@@ -274,7 +274,7 @@ describe('Configuration Tests:', function () {
 
           var newMedia = media.pop();
           _media.title.should.equal(newMedia.title);
-          _media.content.should.equal(newMedia.content);
+          _media.description.should.equal(newMedia.description);
 
           should.exist(newMedia.user);
           should.exist(newMedia.user._id);
@@ -324,7 +324,7 @@ describe('Configuration Tests:', function () {
 
           var newMedia = media.pop();
           _media.title.should.equal(newMedia.title);
-          _media.content.should.equal(newMedia.content);
+          _media.description.should.equal(newMedia.description);
 
           should.not.exist(newMedia.user);
 
@@ -376,7 +376,7 @@ describe('Configuration Tests:', function () {
     it('should NOT overwrite existing media with custom options', function (done) {
 
       var media = new Media(_media);
-      media.content = '_temp_media_content_';
+      media.description = '_temp_media_content_';
 
       media.save()
         .then(function () {
@@ -398,7 +398,7 @@ describe('Configuration Tests:', function () {
 
           var existingMedia = media.pop();
           media.title.should.equal(existingMedia.title);
-          media.content.should.equal(existingMedia.content);
+          media.description.should.equal(existingMedia.description);
 
           return done();
         })
@@ -612,7 +612,7 @@ describe('Configuration Tests:', function () {
 
           var newMedia = media.pop();
           _media.title.should.be.equal(newMedia.title);
-          _media.content.should.be.equal(newMedia.content);
+          _media.description.should.be.equal(newMedia.description);
 
           return done();
         })
@@ -635,7 +635,7 @@ describe('Configuration Tests:', function () {
 
           var newMedia = media.pop();
           media.title.should.equal(newMedia.title);
-          media.content.should.equal(newMedia.content);
+          media.description.should.equal(newMedia.description);
 
           return seed.start({
             collections: [{
@@ -658,7 +658,7 @@ describe('Configuration Tests:', function () {
 
           var existingMedia = media.pop();
           media.title.should.equal(existingMedia.title);
-          media.content.should.equal(existingMedia.content);
+          media.description.should.equal(existingMedia.description);
 
           return done();
         })

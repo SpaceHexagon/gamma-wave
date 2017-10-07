@@ -33,6 +33,12 @@
         return false;
       }
 
+
+      // initiate streaming file upload
+
+      console.info('Before saving: vm.media: ', vm.media);
+
+      // Then do all this stuff
       // Create a new media, or update the current instance
       vm.media.createOrUpdate()
         .then(successCallback)
