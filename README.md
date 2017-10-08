@@ -91,13 +91,13 @@ $ docker-compose up
 ```bash
 $ docker build -t mean .
 $ docker run -p 27017:27017 -d --name db mongo
-$ docker run -p 3000:3000 --link db:db_1 mean
+$ docker run -p 3045:3045 --link db:db_1 mean
 $
 ```
 
 * To enable live reload, forward port 35729 and mount /app and /public as volumes:
 ```bash
-$ docker run -p 3000:3000 -p 35729:35729 -v /Users/mdl/workspace/mean-stack/mean/public:/home/mean/public -v /Users/mdl/workspace/mean-stack/mean/app:/home/mean/app --link db:db_1 mean
+$ docker run -p 3045:3045 -p 35729:35729 -v /Users/mdl/workspace/mean-stack/mean/public:/home/mean/public -v /Users/mdl/workspace/mean-stack/mean/app:/home/mean/app --link db:db_1 mean
 ```
 
 ### Production deploy with Docker
@@ -111,7 +111,7 @@ $ docker-compose -f docker-compose-production.yml up -d
 ```bash
 $ docker build -t mean -f Dockerfile-production .
 $ docker run -p 27017:27017 -d --name db mongo
-$ docker run -p 3000:3000 --link db:db_1 mean
+$ docker run -p 3045:3045 --link db:db_1 mean
 ```
 
 ## Deploying to PAAS
