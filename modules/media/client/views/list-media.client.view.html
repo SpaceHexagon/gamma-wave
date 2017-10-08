@@ -4,15 +4,26 @@
   </div>
   <div class="list-group">
     <a ng-repeat="media in vm.media" ui-sref="media.view({ mediaId: media._id })" class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span ng-bind="media.created | date:'mediumDate'"></span>
-        by
-        <span ng-if="media.user" ng-bind="media.user.displayName"></span>
-        <span ng-if="!media.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" ng-bind="media.title"></h4>
-      <p class="list-group-item-text" ng-bind="media.description"></p>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <small class="list-group-item-text">
+                Posted on
+                <span ng-bind="media.created | date:'mediumDate'"></span>
+                  by
+                <span ng-if="media.user" ng-bind="media.user.displayName"></span>
+                <span ng-if="!media.user">Deleted User</span>
+              </small>
+              <h4 class="list-group-item-heading" ng-bind="media.title"></h4>
+              <p class="list-group-item-text" ng-bind="media.description"></p>
+          </div>
+          <div class="col-md-8">
+              <div ng-if="media.fileExtension.search('\.jpg|\.jpeg|\.png|\.gif|\.webp|\.bmp') > -1" style="overflow: hidden; max-height: 100px; height:100px;" >
+                  <img  src="/api/files/{{media.fileId}}{{media.fileExtension}}" style="float:right; margin-right:3.25em; height: 100px;" alt="{{media.title}}" />    
+              </div>
+          </div>
+        </div>
+      </div>
     </a>
   </div>
 </section>
