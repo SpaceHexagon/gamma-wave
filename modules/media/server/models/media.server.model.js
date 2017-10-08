@@ -32,6 +32,10 @@ var MediaSchema = new Schema({
     type: String,
     default: ''
   },
+  fileExtension: {
+    type: String,
+    default: ''
+  },
   user: {
     type: Schema.ObjectId,
     ref: 'User'

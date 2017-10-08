@@ -16,5 +16,60 @@
    
 
   </p>
-  <video class="video-player" src="/api/files/{{vm.media.fileId}}" style="width:100%; min-width: 640px; min-height: 480px; position: relative;"/>
+  <div ng-if="vm.media.fileExtension.search('\.jpg|\.jpeg|\.png|\.gif|\.webp|\.bmp') > -1" >
+      <img class="video-player" src="/api/files/{{vm.media.fileId}}{{vm.media.fileExtension}}" class="image-viewer" alt="Image Viewer" />    
+  </div>
+  <div ng-if="vm.media.fileExtension.search('\.mp4|\.flv|\.avi|\.webm|\.ogg|\.ogv') > -1" >
+    <video controls autoplay id="video-player" class="video-player" src="/api/files/{{vm.media.fileId}}{{vm.media.fileExtension}}" ></video>
+  </div>
+  <div ng-if="vm.media.fileExtension.search('\.wav|\.mp3|\.m4a|\.ogg') > -1" >
+    <audio controls id="audio-player" class="audio-player" src="/api/files/{{vm.media.fileId}}{{vm.media.fileExtension}}" ></audio>
+  </div>
+  <script src="/lib/audio-visualizer/d3.min.js"></script>
+  <script src="/lib/audio-visualizer/visualizer.js"></script>
+  
+  <script>
+    setTimeout( function () {
+      var audioElement = document.getElementById('audio-player');
+      var parentElement = document.body;
+      var visualizer = new AudioVisualizer();
+      
+      // Create Web Audio API references and creates container svg element for visualizer inserted inside parentElement
+      visualizer.containerHeight = 2500;
+      visualizer.containerWidth = 2750;
+      visualizer.create(audioElement, parentElement);
+      
+      // Refer to Web Audio API analyser for option's reference
+      visualizer.analyserOptions({
+        fftSize: 2048,
+        minDecibels: -87,
+        maxDecibels: -3,
+        smoothingTimeConstant: 0.83
+      });
+      
+      // CSS styling for visualizer container
+      visualizer.containerStyles({
+        position: 'absolute',
+        top: visualizer.containerHeight * -1,
+        left: 0,
+        'z-index': 10000,
+        'pointer-events': 'none'
+      });
+      
+      // Options for visualization bars
+      // Available colors: purple, blue, green, red, orange, gray
+      visualizer.options({
+        color: 'orange',
+        opacity: 0.7,
+        interval: 30,
+        frequencyDataDivide: 9,
+        barPadding: 1.7
+      });
+      
+      visualizer.initialize();
+      visualizer.start();
+    }, 1000);
+  
+  
+  </script>
 </section>

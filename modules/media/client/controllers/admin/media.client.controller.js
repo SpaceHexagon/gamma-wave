@@ -5,7 +5,7 @@
   angular
     .module('media.admin')
     .controller('MediaAdminController', MediaAdminController)
-    .directive('onFileChange', function () {
+    .directive('onFileChange', function () { // hack to work around broken file input binding in angularjs 1.x
       return {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -24,10 +24,15 @@
 
   MediaAdminController.$inject = ['$scope', '$state', '$window', 'mediaResolve', 'Authentication', 'Notification'];
 
-  function upload(files) { // hack to work around broken file input binding in angularjs 1.x
+  function upload(files) {
     // get file input
     // var files = document.querySelector("input[type=file]").files
     console.warn('upload', files);
+    let ext = files[0].name;
+    if (ext.indexOf('.') > -1) {
+      ext = ext.match(/(\..*)$/)[0];
+    }
+    vm.fileExtension = ext;
     function successCallback(res) {
       vm.fileId = res;
       notif.success({ message: '<i class="glyphicon glyphicon-ok"></i> Media uploaded successfully!' });
@@ -48,6 +53,7 @@
     vm.save = save;
     vm.upload = upload;
     vm.fileId = '';
+    vm.fileExtension = '';
     notif = Notification;
     // Remove existing Media
     function remove() {
@@ -69,8 +75,8 @@
 
       // initiate streaming file upload
       // set fileId
-      var fileId = vm.fileId;
-      vm.media.fileId = fileId;
+      vm.media.fileId = vm.fileId;
+      vm.media.fileExtension = vm.fileExtension;
       console.info('Before saving: vm.media: ', vm.media);
       // Then do all this stuff
       // Create a new media, or update the current instance

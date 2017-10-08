@@ -20,7 +20,7 @@ module.exports = function (app) {
 
   app.route('/api/files')
     .post(media.uploadStream);
-  app.route('/api/files/:fileId')
+  app.route('/api/files/:fileId\.:fileExtension')
     .get(media.readStream);
   // Finish by binding the media middleware
   app.param('mediaId', media.mediaByID);

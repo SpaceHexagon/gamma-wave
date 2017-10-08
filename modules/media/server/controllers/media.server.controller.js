@@ -126,6 +126,8 @@ exports.update = function (req, res) {
 
   media.title = req.body.title;
   media.description = req.body.description;
+  media.fileId = req.body.fileId;
+  media.fileExtension = req.body.fileExtension;
 
   media.save(function (err) {
     if (err) {
