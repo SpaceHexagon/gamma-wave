@@ -21,9 +21,8 @@
         var media = this;
         return createOrUpdate(media);
       },
-      upload: function () {
-        var media = this;
-        return upload(media);
+      upload: function (file, done, fail) {
+        return upload(file, done, fail);
       }
     });
 
@@ -49,13 +48,11 @@
       }
     }
 
-    function upload(done, fail) {
+    function upload(file, done, fail) {
       var uploadUrl = '/api/files',
-        fileInput = document.querySelector('input[name=file]'),
-        fd = new FormData(),
-        file = fileInput.files[0];
+        fd = new FormData();
       fd.append('file', file);
-      return $http.post(uploadUrl, fd, {
+      $http.post(uploadUrl, fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       })

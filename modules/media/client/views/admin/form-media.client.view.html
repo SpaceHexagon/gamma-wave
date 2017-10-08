@@ -12,7 +12,7 @@
       <fieldset>
         <div class="form-group" show-errors>
             <label class="control-label" for="title">Upload File</label>
-            <input name="file" type="file" onchange="angular.element(this).scope().upload()" id="title" class="form-control" required>
+            <input name="file" type="file" on-file-change="upload($event, files)" id="file" class="form-control" required>
           <label class="control-label" for="title">Title</label>
           <input name="title" type="text" ng-model="vm.media.title" id="title" class="form-control" placeholder="Title" required autofocus>
           <div ng-messages="vm.form.mediaForm.title.$error" role="alert">

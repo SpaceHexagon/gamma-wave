@@ -13,7 +13,8 @@
   </small>
   <p class="lead" ng-bind="vm.media.description">
     
-    <video class="video-player" />
+   
 
   </p>
+  <video class="video-player" src="/api/files/{{vm.media.fileId}}" style="width:100%; min-width: 640px; min-height: 480px; position: relative;"/>
 </section>

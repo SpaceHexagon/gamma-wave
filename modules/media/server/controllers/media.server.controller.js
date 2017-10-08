@@ -26,10 +26,10 @@ gridDB.open(function (err) { // make sure the db instance is open before passing
  */
 exports.readStream = function (req, res) {
 
-  var username = req.params.username,
-    allFiles = gridDB.collection('files');
-
-  allFiles.find({ filename: req.params.fileId }).toArray(function (err, files) {
+  var username = 'public',
+    allFiles = gridDB.collection(username + '.files');
+  console.warn(req.params.fileId);
+  allFiles.find({ _id: new ObjectID(req.params.fileId) }).toArray(function (err, files) {
     if (err) {
       res.json(err);
     }
@@ -39,7 +39,7 @@ exports.readStream = function (req, res) {
       res.set('Content-Type', files[0].contentType);
       var read_stream = gfs.createReadStream({
         root: username,
-        filename: req.params.file
+        filename: files[0].filename
       });
       read_stream.pipe(res);
       // } else {
